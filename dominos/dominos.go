@@ -13,17 +13,26 @@ import (
 type ApiEndpoint int
 
 const (
-	StoreLocator ApiEndpoint = iota
-	StoreMenu
+	ApiEndpointStoreLocator ApiEndpoint = iota
+	ApiEndpointStoreMenu
 )
 
 var urls = map[ApiEndpoint]string{
-	StoreLocator: "https://order.dominos.com/power/store-locator?s=%s&c=%s&type=delivery",
-	StoreMenu:    "https://order.dominos.com/power/store/%s/menu?lang=en&structured=true",
+	ApiEndpointStoreLocator: "https://order.dominos.com/power/store-locator?s=%s&c=%s&type=delivery",
+	ApiEndpointStoreMenu:    "https://order.dominos.com/power/store/%s/menu?lang=en&structured=true",
 }
 
 func (e ApiEndpoint) String() string {
 	return urls[e]
+}
+
+type Customer struct {
+	Name    string
+	Address Address
+}
+
+type Order struct {
+	Customer Customer
 }
 
 type Address struct {
@@ -64,7 +73,7 @@ type storeLocatorResponse struct {
 }
 
 func runStoreLocator(l1, l2 string) (storeLocatorResponse, error) {
-	endpoint := fmt.Sprintf(StoreLocator.String(), url.PathEscape(l1), url.PathEscape(l2))
+	endpoint := fmt.Sprintf(ApiEndpointStoreLocator.String(), url.PathEscape(l1), url.PathEscape(l2))
 	resp, err := http.Get(endpoint)
 	if err != nil {
 		return storeLocatorResponse{}, err
@@ -254,7 +263,7 @@ func (s *Store) GetMenu() (Menu, error) {
 		return Menu{}, err
 	}
 
-	endpoint := fmt.Sprintf(StoreMenu.String(), strconv.Itoa(sID))
+	endpoint := fmt.Sprintf(ApiEndpointStoreMenu.String(), strconv.Itoa(sID))
 	resp, err := http.Get(endpoint)
 	if err != nil {
 		return Menu{}, err
