@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/k0kubun/pp"
-	"github.com/sytallax/pizzatime/dominos"
+        "github.com/sytallax/pizzatime/dominos"
 )
 
 func main() {

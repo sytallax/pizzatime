@@ -226,22 +226,26 @@ type Menu struct {
 	} `json:"Variants"`
 }
 
-func getKeys(m map[string]any) []string {
-    var keys []string
-    for k := range m {
-		keys = append(keys, k)
-    }
-    return keys
-}
-
 func (m *Menu) CouponCodes() []string {
-	return getKeys(m.Cupons)
+	var keys []string
+	for k := range m.Coupons {
+		keys = append(keys, k)
+	}
+	return keys
 }
 func (m *Menu) ProductCodes() []string {
-	return getKeys(m.Products)
+	var keys []string
+	for k := range m.Products {
+		keys = append(keys, k)
+	}
+	return keys
 }
 func (m *Menu) VariantCodes() []string {
-	return getKeys(m.Variants)
+	var keys []string
+	for k := range m.Variants {
+		keys = append(keys, k)
+	}
+	return keys
 }
 
 func (s *Store) GetMenu() (Menu, error) {
@@ -261,4 +265,3 @@ func (s *Store) GetMenu() (Menu, error) {
 	json.NewDecoder(resp.Body).Decode(&m)
 	return m, nil
 }
-
